@@ -1,5 +1,9 @@
 # NCurses Music Player Client (Plus Plus)
 
+## Changes 
+
+* `sderr` is no longer redirected to the hardcoded path in a `${XDG_DATA_HOME}` location
+
 ## ncmpcpp – featureful ncurses based MPD client inspired by ncmpc
 
 ### Project status
