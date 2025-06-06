@@ -4,6 +4,7 @@
 
 * `sderr` is no longer redirected to the hardcoded path in a `${XDG_DATA_HOME}` location
 * removed `search` and `reset` buttons from the search screen, search is now instant
+* legacy colors inside of format strings in the config `$1` - `$8` are now effective only inside of their own bracket group
 
 ## ncmpcpp – featureful ncurses based MPD client inspired by ncmpc
 

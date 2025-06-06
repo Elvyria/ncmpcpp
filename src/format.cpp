@@ -67,6 +67,7 @@ expressions<CharT> parseBracket(const string<CharT> &s,
 		if (!token.empty())
 			result.push_back(std::move(token));
 	};
+	int colors = 0;
 	for (; it != end; ++it)
 	{
 		if (*it == '{')
@@ -160,6 +161,7 @@ expressions<CharT> parseBracket(const string<CharT> &s,
 			if (flags & Format::Flags::Color && isdigit(*it))
 			{
 				auto color = charToColor(*it);
+				colors += color != NC::Color::End ? 1 : -1 * (colors > 0);
 				result.push_back(color);
 			}
 			// new colors
@@ -218,6 +220,10 @@ expressions<CharT> parseBracket(const string<CharT> &s,
 			token += *it;
 	}
 	push_token();
+
+	for (; colors > 0; --colors) 
+		result.push_back(NC::Color::End);
+
 	return result;
 }
 
