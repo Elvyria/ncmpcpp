@@ -168,9 +168,7 @@ const char *SearchEngine::SearchModes[] =
 	0
 };
 
-size_t SearchEngine::StaticOptions = 20;
-size_t SearchEngine::ResetButton = 16;
-size_t SearchEngine::SearchButton = 15;
+size_t SearchEngine::StaticOptions = 18;
 
 SearchEngine::SearchEngine()
 : Screen(NC::Menu<SEItem>(0, MainStartY, COLS, MainHeight, "", Config.main_color, NC::Border()))
@@ -307,7 +305,7 @@ bool SearchEngine::actionRunnable()
 void SearchEngine::runAction()
 {
 	size_t option = w.choice();
-	if (option > ConstraintsNumber && option < SearchButton)
+	if (option > ConstraintsNumber)
 		w.current()->value().buffer().clear();
 
 	if (option < ConstraintsNumber)
@@ -320,34 +318,28 @@ void SearchEngine::runAction()
 		constraint.resize(13, ' ');
 		w.current()->value().buffer() << NC::Format::Bold << constraint << NC::Format::NoBold << ": ";
 		ShowTag(w.current()->value().buffer(), itsConstraints[option]);
-	}
-	else if (option == ConstraintsNumber+1)
-	{
-		Config.search_in_db = !Config.search_in_db;
-		w.current()->value().buffer() << NC::Format::Bold << "Search in:" << NC::Format::NoBold << ' ' << (Config.search_in_db ? "Database" : "Current playlist");
-	}
-	else if (option == ConstraintsNumber+2)
-	{
-		if (!*++SearchMode)
-			SearchMode = &SearchModes[0];
-		w.current()->value().buffer() << NC::Format::Bold << "Search mode:" << NC::Format::NoBold << ' ' << *SearchMode;
-	}
-	else if (option == SearchButton)
-	{
+
 		w.clearFilter();
-		Statusbar::print("Searching...");
+
 		if (w.size() > StaticOptions)
 			Prepare();
+
+		Statusbar::print("Searching...");
 		Search();
+		Statusbar::print("Searching finished");
+
 		if (w.rbegin()->value().isSong())
 		{
 			if (Config.search_engine_display_mode == DisplayMode::Columns)
 				w.setTitle(Config.titles_visibility ? Display::Columns(w.getWidth()) : "");
+
 			size_t found = w.size()-SearchEngine::StaticOptions;
 			found += 3; // don't count options inserted below
-			w.insertSeparator(ResetButton+1);
-			w.insertItem(ResetButton+2, SEItem(), NC::List::Properties::Inactive);
-			w.at(ResetButton+2).value().mkBuffer()
+
+			w.insertSeparator(ConstraintsNumber+1);
+			w.insertItem(ConstraintsNumber+2, SEItem(), NC::List::Properties::Inactive);
+
+			w.at(ConstraintsNumber+2).value().mkBuffer()
 				<< NC::Format::Bold
 				<< Config.color1
 				<< "Search results: "
@@ -356,20 +348,22 @@ void SearchEngine::runAction()
 				<< "Found " << found << (found > 1 ? " songs" : " song")
 				<< NC::FormattedColor::End<>(Config.color2)
 				<< NC::Format::NoBold;
-			w.insertSeparator(ResetButton+3);
-				Statusbar::print("Searching finished");
-			if (Config.block_search_constraints_change)
-				for (size_t i = 0; i < StaticOptions-4; ++i)
-					w.at(i).setInactive(true);
-			w.scroll(NC::Scroll::Down);
-			w.scroll(NC::Scroll::Down);
+
+			w.insertSeparator(ConstraintsNumber+3);
 		}
 		else
 			Statusbar::print("No results found");
 	}
-	else if (option == ResetButton)
+	else if (option == ConstraintsNumber+4)
 	{
-		reset();
+		Config.search_in_db = !Config.search_in_db;
+		w.current()->value().buffer() << NC::Format::Bold << "Search in:" << NC::Format::NoBold << ' ' << (Config.search_in_db ? "Database" : "Current playlist");
+	}
+	else if (option == ConstraintsNumber+5)
+	{
+		if (!*++SearchMode)
+			SearchMode = &SearchModes[0];
+		w.current()->value().buffer() << NC::Format::Bold << "Search mode:" << NC::Format::NoBold << ' ' << *SearchMode;
 	}
 	else
 		addSongToPlaylist(w.current()->value().song(), true);
@@ -403,9 +397,6 @@ void SearchEngine::Prepare()
 	for (auto &item : w)
 		item.setSelectable(false);
 	
-	w.at(ConstraintsNumber).setSeparator(true);
-	w.at(SearchButton-1).setSeparator(true);
-	
 	for (size_t i = 0; i < ConstraintsNumber; ++i)
 	{
 		std::string constraint = ConstraintsNames[i];
@@ -413,12 +404,13 @@ void SearchEngine::Prepare()
 		w[i].value().mkBuffer() << NC::Format::Bold << constraint << NC::Format::NoBold << ": ";
 		ShowTag(w[i].value().buffer(), itsConstraints[i]);
 	}
+
+	w.at(ConstraintsNumber).setSeparator(true);
 	
 	w.at(ConstraintsNumber+1).value().mkBuffer() << NC::Format::Bold << "Search in:" << NC::Format::NoBold << ' ' << (Config.search_in_db ? "Database" : "Current playlist");
 	w.at(ConstraintsNumber+2).value().mkBuffer() << NC::Format::Bold << "Search mode:" << NC::Format::NoBold << ' ' << *SearchMode;
-	
-	w.at(SearchButton).value().mkBuffer() << "Search";
-	w.at(ResetButton).value().mkBuffer() << "Reset";
+
+	w.at(ConstraintsNumber+3).setSeparator(true);
 }
 
 void SearchEngine::reset()
@@ -587,7 +579,7 @@ void SearchEngine::Search()
 		}
 		
 		if (any_found && found)
-			w.addItem(*s);
+			w.addItem(std::move(*s));
 	}
 }
 

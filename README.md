@@ -3,6 +3,7 @@
 ## Changes 
 
 * `sderr` is no longer redirected to the hardcoded path in a `${XDG_DATA_HOME}` location
+* removed `search` and `reset` buttons from the search screen, search is now instant
 
 ## ncmpcpp – featureful ncurses based MPD client inspired by ncmpc
 

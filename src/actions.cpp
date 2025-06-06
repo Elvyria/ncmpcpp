@@ -1295,7 +1295,6 @@ bool StartSearching::canBeRun()
 
 void StartSearching::run()
 {
-	mySearcher->main().highlight(SearchEngine::SearchButton);
 	mySearcher->main().setHighlighting(0);
 	mySearcher->main().refresh();
 	mySearcher->main().setHighlighting(1);

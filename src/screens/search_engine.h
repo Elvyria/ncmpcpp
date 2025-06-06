@@ -134,8 +134,6 @@ struct SearchEngine: Screen<SearchEngineWindow>, Filterable, HasActions, HasSong
 	void reset();
 	
 	static size_t StaticOptions;
-	static size_t SearchButton;
-	static size_t ResetButton;
 	
 private:
 	void Prepare();
