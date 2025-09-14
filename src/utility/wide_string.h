@@ -35,6 +35,10 @@ std::wstring ToWString(StringT &&s)
 	return boost::locale::conv::utf_to_utf<wchar_t>(std::forward<StringT>(s));
 }
 
+inline std::wstring IntoWString(std::string v) {
+	return ToWString(std::move(v));
+}
+
 size_t wideLength(const std::wstring &ws);
 void wideCut(std::wstring &ws, size_t max_length);
 
