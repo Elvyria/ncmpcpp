@@ -86,52 +86,22 @@ void drawTitle(const MPD::Song &np)
 	windowTitle(Format::stringify<char>(Config.song_window_title_format, &np));
 }
 
-std::string playerStateToString(MPD::PlayerState ps)
+std::wstring playerStateToString(MPD::PlayerState ps)
 {
-	std::string result;
+	std::wstring result;
 	switch (ps)
 	{
 		case MPD::psUnknown:
-			switch (Config.design)
-			{
-				case Design::Alternative:
-					result = "[unknown]";
-					break;
-				case Design::Classic:
-					break;
-			}
+			result = Config.state_player_unknown;
 			break;
 		case MPD::psPlay:
-			switch (Config.design)
-			{
-				case Design::Alternative:
-					result = "[playing]";
-					break;
-				case Design::Classic:
-					result = "Playing:";
-					break;
-			}
+			result = Config.state_player_playing;
 			break;
 		case MPD::psPause:
-			switch (Config.design)
-			{
-				case Design::Alternative:
-					result = "[paused]";
-					break;
-				case Design::Classic:
-					result = "Paused:";
-					break;
-			}
+			result = Config.state_player_paused;
 			break;
 		case MPD::psStop:
-			switch (Config.design)
-			{
-				case Design::Alternative:
-					result = "[stopped]";
-					break;
-				case Design::Classic:
-					break;
-			}
+			result = Config.state_player_stopped;
 			break;
 	}
 	return result;
@@ -544,7 +514,7 @@ void Status::Changes::playerState()
 			break;
 	}
 
-	std::string state = playerStateToString(m_player_state);
+	std::wstring state = playerStateToString(m_player_state);
 	if (Config.design == Design::Alternative)
 	{
 		*wHeader << NC::XY(0, 1) << NC::Format::Bold << state << NC::Format::NoBold;
@@ -631,7 +601,7 @@ void Status::Changes::elapsedTime(bool update_elapsed)
 		m_kbps = st.kbps();
 	}
 
-	std::string ps = playerStateToString(m_player_state);
+	std::wstring ps = playerStateToString(m_player_state);
 	std::string tracklength;
 
 	drawTitle(np);

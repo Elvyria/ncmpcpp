@@ -606,6 +606,10 @@ bool Configuration::read(const std::vector<std::string> &config_paths)
 	p.add("color2", &color2, "green");
 	p.add("progressbar_color", &progressbar_color, "black:b");
 	p.add("progressbar_elapsed_color", &progressbar_elapsed_color, "green:b");
+	p.add("state_player_unknown_look", &state_player_unknown, " unknown", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_player_playing_look", &state_player_playing, " playing", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_player_paused_look", &state_player_paused, " paused", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_player_stopped_look", &state_player_stopped, " stopped", [](std::string v) { return ToWString(std::move(v)); });
 	p.add("state_flags_consume_look", &state_flags_consume, "  ", [](std::string v) { return ToWString(std::move(v)); });
 	p.add("state_flags_crossfade_look", &state_flags_crossfade, " 󰥛 ", [](std::string v) { return ToWString(std::move(v)); });
 	p.add("state_flags_db_update_look", &state_flags_db_update, "  ", [](std::string v) { return ToWString(std::move(v)); });

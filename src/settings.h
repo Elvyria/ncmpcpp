@@ -83,6 +83,10 @@ struct Configuration
 	std::string lastfm_preferred_language;
 	std::wstring progressbar;
 	std::wstring visualizer_chars;
+	std::wstring state_player_unknown;
+	std::wstring state_player_playing;
+	std::wstring state_player_paused;
+	std::wstring state_player_stopped;
 	std::wstring state_flags_consume;
 	std::wstring state_flags_crossfade;
 	std::wstring state_flags_db_update;
