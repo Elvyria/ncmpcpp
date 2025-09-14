@@ -1,6 +1,6 @@
 # NCurses Music Player Client (Plus Plus)
 
-<img width="1087" height="635" alt="image" src="https://github.com/user-attachments/assets/f572ab72-3d05-422f-a673-5fa31277cd10" />
+<img width="1086" height="643" alt="image" src="https://github.com/user-attachments/assets/e48322b8-e2b1-444a-8699-f493ff2eab8c" />
 
 
 ## Changes 
