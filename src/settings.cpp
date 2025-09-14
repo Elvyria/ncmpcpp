@@ -615,6 +615,7 @@ bool Configuration::read(const std::vector<std::string> &config_paths)
 	p.add("state_flags_db_update_look", &state_flags_db_update, "  ", IntoWString);
 	p.add("state_flags_random_look", &state_flags_random, "  ", IntoWString);
 	p.add("state_flags_repeat_look", &state_flags_repeat, " 󰑖 ", IntoWString);
+	p.add("state_flags_repeat_single_look", &state_flags_repeat_single, " 󰑘 ", IntoWString);
 	p.add("state_flags_single_look", &state_flags_single, " 󰬺", IntoWString);
 	p.add("statusbar_color", &statusbar_color, "default");
 	p.add("statusbar_time_color", &statusbar_time_color, "default:b");

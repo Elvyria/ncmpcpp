@@ -728,10 +728,19 @@ void Status::Changes::flags()
 	// switch_state += '[ %s ]';
 
 	switch_state += is_db_update ? Config.state_flags_db_update: L"";
-	switch_state += is_repeat    ? Config.state_flags_repeat:    L"";
-	switch_state += is_random    ? Config.state_flags_random:    L"";
-	switch_state += is_single    ? Config.state_flags_single:    L"";
-	switch_state += is_consume   ? Config.state_flags_consume:   L"";
+
+	if (is_repeat && is_single)
+	{
+		switch_state += Config.state_flags_repeat_single;
+	}
+	else
+	{
+		switch_state += is_repeat ? Config.state_flags_repeat: L"";
+		switch_state += is_single ? Config.state_flags_single: L"";
+	}
+
+	switch_state += is_random  ? Config.state_flags_random:  L"";
+	switch_state += is_consume ? Config.state_flags_consume: L"";
 
 	switch_state += crossfade_seconds != 0 ? Config.state_flags_crossfade: L"";
 

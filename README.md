@@ -9,7 +9,7 @@
 * removed `search` and `reset` buttons from the search screen, search is now instant
 * legacy colors inside of format strings in the config `$1` - `$8` are now effective only inside of their own bracket group
 * fixed regexp for `https://genius.com` lyric fetcher
-* configurable nerd font icons for the state flags `state_flags_consume_look`, `state_flags_crossfade_look`, `state_flags_db_update_look`, `state_flags_random_look`, `state_flags_repeat_look`, `state_flags_single_look`
+* configurable nerd font icons for the state flags `state_flags_consume_look`, `state_flags_crossfade_look`, `state_flags_db_update_look`, `state_flags_random_look`, `state_flags_repeat_look`, `state_flags_repeat_single_look`, `state_flags_single_look`
 * configurable player state message `state_player_playing_look`, `state_player_paused_look`, `state_player_stopped_look`, `state_player_unknown_look`
 * `--ignore-config-errors` flag is removed, config errors are ignored by default
 
