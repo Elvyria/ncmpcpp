@@ -62,12 +62,13 @@ size_t second_line_scroll_begin = 0;
 
 bool m_status_initialized;
 
-char m_consume;
-char m_crossfade;
-char m_db_updating;
-char m_repeat;
-char m_random;
-char m_single;
+unsigned crossfade_seconds;
+
+bool is_consume;
+bool is_db_update;
+bool is_random;
+bool is_repeat;
+bool is_single;
 
 int m_current_song_id;
 int m_current_song_pos;
@@ -258,6 +259,8 @@ void Status::trace(bool update_timer, bool update_window_timeout)
 
 void Status::update(int event)
 {
+#define NOTIFY(fmt, ...) if (m_status_initialized) Statusbar::printf(fmt, ##__VA_ARGS__);
+
 	auto st = Mpd.getStatus();
 	m_current_song_pos = st.currentSongPosition();
 	m_elapsed_time = st.elapsedTime();
@@ -293,42 +296,39 @@ void Status::update(int event)
 	{
 		if (event & MPD_IDLE_UPDATE)
 		{
-			m_db_updating = st.updateID() ? 'U' : 0;
-			if (m_status_initialized)
-				Statusbar::printf("Database update %1%", m_db_updating ? "started" : "finished");
+			is_db_update = st.updateID() != 0;
+			Statusbar::printf("Database update %1%", is_db_update ? "started" : "finished");
 		}
 		if (event & MPD_IDLE_OPTIONS)
 		{
-			if (('r' == m_repeat) != st.repeat())
-			{
-				m_repeat = st.repeat() ? 'r' : 0;
-				if (m_status_initialized)
-					Statusbar::printf("Repeat mode is %1%", !m_repeat ? "off" : "on");
+			bool repeat = st.repeat();
+			if (is_repeat != repeat) {
+				is_repeat = repeat;
+				NOTIFY("Repeat mode is %1%", is_repeat ? "on" : "off");
 			}
-			if (('z' == m_random) != st.random())
-			{
-				m_random = st.random() ? 'z' : 0;
-				if (m_status_initialized)
-					Statusbar::printf("Random mode is %1%", !m_random ? "off" : "on");
+
+			bool random = st.random();
+			if (is_random != random) {
+				is_random = random;
+				NOTIFY("Random mode is %1%", is_random ? "on" : "off");
 			}
-			if (('s' == m_single) != st.single())
-			{
-				m_single = st.single() ? 's' : 0;
-				if (m_status_initialized)
-					Statusbar::printf("Single mode is %1%", !m_single ? "off" : "on");
+
+			bool single = st.single();
+			if (is_single != single) {
+				is_single = single;
+				NOTIFY("Single mode is %1%", is_single ? "on" : "off");
 			}
-			if (('c' == m_consume) != st.consume())
-			{
-				m_consume = st.consume() ? 'c' : 0;
-				if (m_status_initialized)
-					Statusbar::printf("Consume mode is %1%", !m_consume ? "off" : "on");
+
+			bool consume = st.consume();
+			if (is_consume != consume) {
+				is_consume = consume;
+				NOTIFY("Consume mode is %1%", is_consume ? "on" : "off");
 			}
-			if (('x' == m_crossfade) != (st.crossfade() != 0))
-			{
-				int crossfade = st.crossfade();
-				m_crossfade = crossfade ? 'x' : 0;
-				if (m_status_initialized)
-					Statusbar::printf("Crossfade set to %1% seconds", crossfade);
+
+			unsigned crossfade = st.crossfade();
+			if (crossfade_seconds != crossfade) {
+				crossfade_seconds = crossfade;
+				NOTIFY("Crossfade set to %1% seconds", crossfade_seconds);
 			}
 		}
 		Changes::flags();
@@ -342,16 +342,18 @@ void Status::update(int event)
 		applyToVisibleWindows(&BaseScreen::refreshWindow);
 }
 
-void Status::clear()
+void Status::reset()
 {
 	// reset local variables
 	m_status_initialized = false;
-	m_repeat = 0;
-	m_random = 0;
-	m_single = 0;
-	m_consume = 0;
-	m_crossfade = 0;
-	m_db_updating = 0;
+
+	crossfade_seconds = 0;
+	is_consume = false;
+	is_db_update = false;
+	is_repeat = false;
+	is_random = false;
+	is_single = false;
+
 	m_current_song_id = -1;
 	m_current_song_pos = -1;
 	m_kbps = 0;
@@ -366,27 +368,27 @@ void Status::clear()
 
 bool Status::State::consume()
 {
-	return m_consume != 0;
+	return is_consume;
 }
 
 bool Status::State::crossfade()
 {
-	return m_crossfade != 0;
+	return crossfade_seconds != 0;
 }
 
 bool Status::State::repeat()
 {
-	return m_repeat != 0;
+	return is_repeat;
 }
 
 bool Status::State::random()
 {
-	return m_random != 0;
+	return is_random;
 }
 
 bool Status::State::single()
 {
-	return m_single != 0;
+	return is_single;
 }
 
 int Status::State::currentSongID()
@@ -750,53 +752,49 @@ void Status::Changes::flags()
 	if (!Config.header_visibility && Config.design == Design::Classic)
 		return;
 
-	std::string switch_state;
+	std::wstring switch_state;
+
+	// TODO: Config.state_flags_format with a placeholder? [ ... ]
+	// switch_state += '[ %s ]';
+
+	switch_state += is_db_update ? Config.state_flags_db_update: L"";
+	switch_state += is_repeat    ? Config.state_flags_repeat:    L"";
+	switch_state += is_random    ? Config.state_flags_random:    L"";
+	switch_state += is_single    ? Config.state_flags_single:    L"";
+	switch_state += is_consume   ? Config.state_flags_consume:   L"";
+
+	switch_state += crossfade_seconds != 0 ? Config.state_flags_crossfade: L"";
+
+	// TODO: const
+	auto max_length = Config.state_flags_repeat.length()
+		+ Config.state_flags_random.length()
+		+ Config.state_flags_single.length()
+		+ Config.state_flags_consume.length()
+		+ Config.state_flags_crossfade.length()
+		+ Config.state_flags_db_update.length();
+
+	*wHeader << NC::XY(COLS - max_length, 1) << NC::TermManip::ClearToEOL;
+
 	switch (Config.design)
 	{
 		case Design::Classic:
-			if (m_repeat)
-				switch_state += m_repeat;
-			if (m_random)
-				switch_state += m_random;
-			if (m_single)
-				switch_state += m_single;
-			if (m_consume)
-				switch_state += m_consume;
-			if (m_crossfade)
-				switch_state += m_crossfade;
-			if (m_db_updating)
-				switch_state += m_db_updating;
-
 			*wHeader << Config.state_line_color;
 			mvwhline(wHeader->raw(), 1, 0, 0, COLS);
 			*wHeader << NC::FormattedColor::End<>(Config.state_line_color);
 
 			if (!switch_state.empty())
-				*wHeader << NC::XY(COLS-switch_state.length()-3, 1)
-				         << Config.state_line_color
-				         << "["
-				         << NC::FormattedColor::End<>(Config.state_line_color)
-								 << Config.state_flags_color
-								 << switch_state
-				         << NC::FormattedColor::End<>(Config.state_flags_color)
-				         << Config.state_line_color
-								 << "]"
-				         << NC::FormattedColor::End<>(Config.state_line_color);
+				*wHeader << NC::XY(COLS - switch_state.length() - 3, 1)
+					<< Config.state_flags_color
+					<< switch_state
+					<< NC::FormattedColor::End<>(Config.state_flags_color);
 
 			break;
 		case Design::Alternative:
-			switch_state += '[';
-			switch_state += m_repeat ? m_repeat : '-';
-			switch_state += m_random ? m_random : '-';
-			switch_state += m_single ? m_single : '-';
-			switch_state += m_consume ? m_consume : '-';
-			switch_state += m_crossfade ? m_crossfade : '-';
-			switch_state += m_db_updating ? m_db_updating : '-';
-			switch_state += ']';
-			*wHeader << NC::XY(COLS-switch_state.length(), 1)
-			         << Config.state_flags_color
-			         << switch_state
-			         << NC::FormattedColor::End<>(Config.state_flags_color);
+			*wHeader << NC::XY(COLS - switch_state.length(), 1)
+				<< Config.state_flags_color
+				<< switch_state
+				<< NC::FormattedColor::End<>(Config.state_flags_color);
+
 			if (!Config.header_visibility) // in this case also draw separator
 			{
 				*wHeader << Config.alternative_ui_separator_color;

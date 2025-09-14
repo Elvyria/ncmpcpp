@@ -83,6 +83,12 @@ struct Configuration
 	std::string lastfm_preferred_language;
 	std::wstring progressbar;
 	std::wstring visualizer_chars;
+	std::wstring state_flags_consume;
+	std::wstring state_flags_crossfade;
+	std::wstring state_flags_db_update;
+	std::wstring state_flags_random;
+	std::wstring state_flags_repeat;
+	std::wstring state_flags_single;
 	size_t visualizer_fps;
 	bool visualizer_autoscale;
 	bool visualizer_spectrum_smooth_look;

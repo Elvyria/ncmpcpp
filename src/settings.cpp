@@ -606,6 +606,12 @@ bool Configuration::read(const std::vector<std::string> &config_paths, bool igno
 	p.add("color2", &color2, "green");
 	p.add("progressbar_color", &progressbar_color, "black:b");
 	p.add("progressbar_elapsed_color", &progressbar_elapsed_color, "green:b");
+	p.add("state_flags_consume_look", &state_flags_consume, "  ", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_flags_crossfade_look", &state_flags_crossfade, " 󰥛 ", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_flags_db_update_look", &state_flags_db_update, "  ", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_flags_random_look", &state_flags_random, "  ", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_flags_repeat_look", &state_flags_repeat, " 󰑖 ", [](std::string v) { return ToWString(std::move(v)); });
+	p.add("state_flags_single_look", &state_flags_single, " 󰬺", [](std::string v) { return ToWString(std::move(v)); });
 	p.add("statusbar_color", &statusbar_color, "default");
 	p.add("statusbar_time_color", &statusbar_time_color, "default:b");
 	p.add("player_state_color", &player_state_color, "default:b");

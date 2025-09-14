@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 			{
 				connect_attempt = Timer;
 				// reset local status info
-				Status::clear();
+				Status::reset();
 				// clear mpd callback
 				wFooter->clearFDCallbacksList();
 				try
