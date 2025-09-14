@@ -32,7 +32,8 @@
 * [ncurses](https://invisible-island.net/ncurses/announce.html)
 * [readline](https://tiswww.case.edu/php/chet/readline/rltop.html)
 * [curl](https://curl.se), for fetching lyrics and last.fm data
-#### Optional libraries
+#### Optional
+* [nerd font](https://www.nerdfonts.com), to properly display new icons
 * [fftw](http://www.fftw.org), for frequency spectrum music visualization mode
 * [taglib](https://taglib.org/), for tag editing
 
