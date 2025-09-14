@@ -1,5 +1,8 @@
 # NCurses Music Player Client (Plus Plus)
 
+<img width="1087" height="635" alt="image" src="https://github.com/user-attachments/assets/f572ab72-3d05-422f-a673-5fa31277cd10" />
+
+
 ## Changes 
 
 * `sderr` is no longer redirected to the hardcoded path in a `${XDG_DATA_HOME}` location
