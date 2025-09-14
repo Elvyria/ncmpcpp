@@ -61,7 +61,7 @@ std::vector<size_t> parse_ratio(const std::string &v, const std::vector<size_t>:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool option_parser::run(std::istream &is, bool ignore_errors)
+bool option_parser::run(std::istream &is)
 {
 	// quoted value. leftmost and rightmost quotation marks are the delimiters.
 	boost::regex quoted("(\\w+)\\h*=\\h*\"(.*)\"[^\"]*");
@@ -86,22 +86,18 @@ bool option_parser::run(std::istream &is, bool ignore_errors)
 				{
 					std::cerr << "Error while processing option \"" << option
 					          << "\": " << e.what() << "\n";
-					if (!ignore_errors)
-						return false;
 				}
 			}
 			else
 			{
 				std::cerr << "Unknown option: " << option << "\n";
-				if (!ignore_errors)
-					return false;
 			}
 		}
 	}
 	return true;
 }
 
-bool option_parser::initialize_undefined(bool ignore_errors)
+bool option_parser::initialize_undefined()
 {
 	for (auto &pp : m_parsers)
 	{
@@ -116,8 +112,6 @@ bool option_parser::initialize_undefined(bool ignore_errors)
 			{
 				std::cerr << "Error while initializing option \"" << pp.first
 				          << "\": " << e.what() << "\n";
-				if (ignore_errors)
-					return false;
 			}
 		}
 	}

@@ -209,7 +209,7 @@ void deprecated(const char *option, const char *version_removal,
 
 }
 
-bool Configuration::read(const std::vector<std::string> &config_paths, bool ignore_errors)
+bool Configuration::read(const std::vector<std::string> &config_paths)
 {
 	option_parser p;
 	// keep the same order of variables as in configuration file
@@ -627,7 +627,7 @@ bool Configuration::read(const std::vector<std::string> &config_paths, bool igno
 			std::ifstream f(config_path);
 			if (f.is_open())
 				std::clog << "Reading configuration from " << config_path << "...\n";
-			return p.run(f, ignore_errors);
+			return p.run(f);
 		}
-	) && p.initialize_undefined(ignore_errors);
+	) && p.initialize_undefined();
 }

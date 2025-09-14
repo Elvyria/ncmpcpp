@@ -180,8 +180,8 @@ public:
 		add(std::move(option), dest, std::move(default_), verbose_lexical_cast<DestT>);
 	}
 
-	bool run(std::istream &is, bool warn_on_errors);
-	bool initialize_undefined(bool warn_on_errors);
+	bool run(std::istream &is);
+	bool initialize_undefined();
 };
 
 #endif // NCMPCPP_UTILITY_OPTION_PARSER_H

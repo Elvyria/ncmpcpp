@@ -92,7 +92,6 @@ bool configure(int argc, char **argv)
 		("port,p", po::value<int>()->value_name("PORT")->default_value(6600), "connect to server at port")
 		("current-song", po::value<std::string>()->value_name("FORMAT")->implicit_value("{{{(%l) }{{%a - }%t}}|{%f}}"), "print current song using given format and exit")
 		("config,c", po::value<std::vector<std::string>>(&config_paths)->value_name("PATH")->default_value(default_config_paths, join<std::string>(default_config_paths, " AND ")), "specify configuration file(s)")
-		("ignore-config-errors", "ignore unknown and invalid options in configuration files")
 		("test-lyrics-fetchers", "check if lyrics fetchers work")
 		("bindings,b", po::value<std::vector<std::string>>(&bindings_paths)->value_name("PATH")->default_value(default_bindings_paths, join<std::string>(default_bindings_paths, " AND ")), "specify bindings file(s)")
 		("screen,s", po::value<std::string>()->value_name("SCREEN"), "specify the startup screen")
@@ -188,7 +187,7 @@ bool configure(int argc, char **argv)
 
 		// read configuration
 		std::for_each(config_paths.begin(), config_paths.end(), expand_home);
-		if (Config.read(config_paths, vm.count("ignore-config-errors")) == false)
+		if (Config.read(config_paths) == false)
 			exit(1);
 
 		// read bindings
