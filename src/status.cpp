@@ -745,9 +745,8 @@ void Status::Changes::flags()
 	switch_state += crossfade_seconds != 0 ? Config.state_flags_crossfade: L"";
 
 	// TODO: const
-	auto max_length = Config.state_flags_repeat.length()
-		+ Config.state_flags_random.length()
-		+ Config.state_flags_single.length()
+	auto max_length = Config.state_flags_random.length()
+		+ std::max(std::max( Config.state_flags_repeat.length(), Config.state_flags_single.length()), Config.state_flags_repeat_single.length())
 		+ Config.state_flags_consume.length()
 		+ Config.state_flags_crossfade.length()
 		+ Config.state_flags_db_update.length();
