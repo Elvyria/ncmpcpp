@@ -12,6 +12,7 @@
 * configurable nerd font icons for the state flags `state_flags_consume_look`, `state_flags_crossfade_look`, `state_flags_db_update_look`, `state_flags_random_look`, `state_flags_repeat_look`, `state_flags_repeat_single_look`, `state_flags_single_look`
 * configurable player state message `state_player_playing_look`, `state_player_paused_look`, `state_player_stopped_look`, `state_player_unknown_look`
 * `--ignore-config-errors` flag is removed, config errors are ignored by default
+* eyecandy icons from [nerd-font](https://www.nerdfonts.com) all over the place 
 
 ## ncmpcpp – featureful ncurses based MPD client inspired by ncmpc
 
