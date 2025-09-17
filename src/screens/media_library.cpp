@@ -48,6 +48,9 @@ using Global::myScreen;
 
 namespace ph = std::placeholders;
 
+const std::string ALBUMS_TITLE = "󰀥   Albums";
+const std::string SONGS_TITLE = "    Songs";
+
 MediaLibrary *myLibrary;
 
 namespace {
@@ -206,7 +209,7 @@ MediaLibrary::MediaLibrary()
 			menu << Charset::utf8ToLocale(tag);
 	});
 	
-	Albums = NC::Menu<AlbumEntry>(itsMiddleColStartX, MainStartY, itsMiddleColWidth, MainHeight, Config.titles_visibility ? " 󰀥   Albums" : "", Config.main_color, NC::Border());
+	Albums = NC::Menu<AlbumEntry>(itsMiddleColStartX, MainStartY, itsMiddleColWidth, MainHeight, Config.titles_visibility ? ALBUMS_TITLE : "", Config.main_color, NC::Border());
 	setHighlightInactiveColumnFixes(Albums);
 	Albums.cyclicScrolling(Config.use_cyclic_scrolling);
 	Albums.centeredCursor(Config.centered_cursor);
@@ -216,7 +219,7 @@ MediaLibrary::MediaLibrary()
 		menu << Charset::utf8ToLocale(AlbumToString(menu.drawn()->value()));
 	});
 	
-	Songs = NC::Menu<MPD::Song>(itsRightColStartX, MainStartY, itsRightColWidth, MainHeight, Config.titles_visibility ? "    Songs" : "", Config.main_color, NC::Border());
+	Songs = NC::Menu<MPD::Song>(itsRightColStartX, MainStartY, itsRightColWidth, MainHeight, Config.titles_visibility ? SONGS_TITLE : "", Config.main_color, NC::Border());
 	setHighlightInactiveColumnFixes(Songs);
 	Songs.cyclicScrolling(Config.use_cyclic_scrolling);
 	Songs.centeredCursor(Config.centered_cursor);
@@ -931,17 +934,17 @@ void MediaLibrary::toggleColumnsMode()
 			if (isAlbumOnly)
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " (sorted by mtime)" : "";
-				Albums.setTitle("Albums" + and_mtime);
+				Albums.setTitle(ALBUMS_TITLE + and_mtime);
 			}
 			else
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " and mtime" : "";
-				Albums.setTitle("Albums (sorted by " + item_type + and_mtime + ")");
+				Albums.setTitle(ALBUMS_TITLE + " (sorted by " + item_type + and_mtime + ")");
 			}
 		}
 	}
 	else
-		Albums.setTitle(Config.titles_visibility ? "Albums" : "");
+		Albums.setTitle(Config.titles_visibility ? " " + ALBUMS_TITLE  : "");
 	resize();
 }
 
@@ -971,12 +974,12 @@ void MediaLibrary::toggleSortMode()
 			if (isAlbumOnly)
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " (sorted by mtime)" : "";
-				Albums.setTitle("Albums" + and_mtime);
+				Albums.setTitle(ALBUMS_TITLE + and_mtime);
 			}
 			else
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? (" " "and mtime") : "";
-				Albums.setTitle("Albums (sorted by " + item_type + and_mtime + ")");
+				Albums.setTitle(ALBUMS_TITLE + " (sorted by " + item_type + and_mtime + ")");
 			}
 		}
 	}

@@ -145,19 +145,20 @@ std::vector<MPD::Song> SearchEngineWindow::getSelectedSongs()
 
 /**********************************************************************/
 
+const unsigned CONSTRAINT_WIDTH = 22;
 const char *SearchEngine::ConstraintsNames[] =
 {
-	"Any",
-	"Artist",
-	"Album Artist",
-	"Title",
-	"Album",
-	"Filename",
-	"Composer",
-	"Performer",
-	"Genre",
-	"Date",
-	"Comment"
+	"    Any",
+	"    Artist",
+	"    Album Artist",
+	" 󰊄   Title",
+	" 󰀥   Album",
+	"    Filename",
+	" 󱟄   Composer",
+	" 󰍰   Performer",
+	" 󱑽   Genre",
+	"    Date",
+	"    Comment"
 };
 
 const char *SearchEngine::SearchModes[] =
@@ -315,7 +316,7 @@ void SearchEngine::runAction()
 		Statusbar::put() << NC::Format::Bold << constraint << NC::Format::NoBold << ": ";
 		itsConstraints[option] = Global::wFooter->prompt(itsConstraints[option]);
 		w.current()->value().buffer().clear();
-		constraint.resize(13, ' ');
+		constraint.resize(CONSTRAINT_WIDTH, ' ');
 		w.current()->value().buffer() << NC::Format::Bold << constraint << NC::Format::NoBold << ": ";
 		ShowTag(w.current()->value().buffer(), itsConstraints[option]);
 
@@ -400,7 +401,7 @@ void SearchEngine::Prepare()
 	for (size_t i = 0; i < ConstraintsNumber; ++i)
 	{
 		std::string constraint = ConstraintsNames[i];
-		constraint.resize(13, ' ');
+		constraint.resize(CONSTRAINT_WIDTH, ' ');
 		w[i].value().mkBuffer() << NC::Format::Bold << constraint << NC::Format::NoBold << ": ";
 		ShowTag(w[i].value().buffer(), itsConstraints[i]);
 	}
