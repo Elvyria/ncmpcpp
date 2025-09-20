@@ -4,6 +4,7 @@
 #define ICON_ANY           ""
 #define ICON_ARTIST        ""
 #define ICON_ARTIST_ALBUM  ""
+#define ICON_BACK          "󱞽"
 #define ICON_COMMENT       ""
 #define ICON_COMPOSER      "󱟄"
 #define ICON_CONSUME       ""

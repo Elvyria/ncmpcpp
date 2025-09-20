@@ -387,7 +387,7 @@ void Display::Items(NC::Menu<MPD::Item> &menu, const SongList &list)
 			if (path != "..")
 				menu << " " ICON_DIRECTORY "  " << Charset::utf8ToLocale(path);
 			else
-				menu << " 󱞽 ";
+				menu << " " ICON_BACK;
 			break;
 		}
 		case MPD::Item::Type::Song:
