@@ -36,6 +36,7 @@
 #include "utility/comparators.h"
 #include "title.h"
 #include "screens/screen_switcher.h"
+#include "lang.h"
 
 using Global::MainHeight;
 using Global::MainStartY;
@@ -146,19 +147,19 @@ std::vector<MPD::Song> SearchEngineWindow::getSelectedSongs()
 /**********************************************************************/
 
 const unsigned CONSTRAINT_WIDTH = 22;
-const char *SearchEngine::ConstraintsNames[] =
+const std::string SearchEngine::ConstraintsNames[] =
 {
-	"    Any",
-	"    Artist",
-	"    Album Artist",
-	" 󰊄   Title",
-	" 󰀥   Album",
-	"    Filename",
-	" 󱟄   Composer",
-	" 󰍰   Performer",
-	" 󱑽   Genre",
-	"    Date",
-	"    Comment"
+	lang::SEARCH_ANY,
+	lang::SEARCH_ARTIST,
+	lang::SEARCH_ARTIST_ALBUM,
+	lang::SEARCH_TITLE,
+	lang::SEARCH_ALBUM,
+	lang::SEARCH_FILE,
+	lang::SEARCH_COMPOSER,
+	lang::SEARCH_PERFORMER,
+	lang::SEARCH_GENRE,
+	lang::SEARCH_DATE,
+	lang::SEARCH_COMMENT,
 };
 
 const char *SearchEngine::SearchModes[] =

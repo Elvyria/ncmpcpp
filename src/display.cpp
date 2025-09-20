@@ -21,6 +21,7 @@
 #include <cassert>
 
 #include "curses/menu_impl.h"
+#include "icons.h"
 #include "screens/browser.h"
 #include "charset.h"
 #include "display.h"
@@ -381,11 +382,14 @@ void Display::Items(NC::Menu<MPD::Item> &menu, const SongList &list)
 	const MPD::Item &item = menu.drawn()->value();
 	switch (item.type())
 	{
-		case MPD::Item::Type::Directory:
-			menu << "["
-			     << Charset::utf8ToLocale(getBasename(item.directory().path()))
-			     << "]";
+		case MPD::Item::Type::Directory: {
+			const std::string path = getBasename(item.directory().path());
+			if (path != "..")
+				menu << " " ICON_DIRECTORY "  " << Charset::utf8ToLocale(path);
+			else
+				menu << " 󱞽 ";
 			break;
+		}
 		case MPD::Item::Type::Song:
 			switch (Config.browser_display_mode)
 			{

@@ -30,6 +30,7 @@
 #include "utility/conversion.h"
 #include "utility/option_parser.h"
 #include "utility/type_conversions.h"
+#include "lang.h"
 
 #ifdef HAVE_LANGINFO_H
 # include <langinfo.h>
@@ -606,17 +607,17 @@ bool Configuration::read(const std::vector<std::string> &config_paths)
 	p.add("color2", &color2, "green");
 	p.add("progressbar_color", &progressbar_color, "black:b");
 	p.add("progressbar_elapsed_color", &progressbar_elapsed_color, "green:b");
-	p.add("state_player_unknown_look", &state_player_unknown, " unknown", IntoWString);
-	p.add("state_player_playing_look", &state_player_playing, " playing", IntoWString);
-	p.add("state_player_paused_look", &state_player_paused, " paused", IntoWString);
-	p.add("state_player_stopped_look", &state_player_stopped, " stopped", IntoWString);
-	p.add("state_flags_consume_look", &state_flags_consume, "  ", IntoWString);
-	p.add("state_flags_crossfade_look", &state_flags_crossfade, " 󰥛 ", IntoWString);
-	p.add("state_flags_db_update_look", &state_flags_db_update, "  ", IntoWString);
-	p.add("state_flags_random_look", &state_flags_random, "  ", IntoWString);
-	p.add("state_flags_repeat_look", &state_flags_repeat, " 󰑖 ", IntoWString);
-	p.add("state_flags_repeat_single_look", &state_flags_repeat_single, " 󰑘 ", IntoWString);
-	p.add("state_flags_single_look", &state_flags_single, " 󰬺", IntoWString);
+	p.add("state_player_unknown_look", &state_player_unknown, lang::STATE_UNKNOWN, IntoWString);
+	p.add("state_player_playing_look", &state_player_playing, lang::STATE_PLAYING, IntoWString);
+	p.add("state_player_paused_look", &state_player_paused, lang::STATE_PAUSED, IntoWString);
+	p.add("state_player_stopped_look", &state_player_stopped, lang::STATE_STOPPED, IntoWString);
+	p.add("state_flags_consume_look", &state_flags_consume, " " ICON_CONSUME, IntoWString);
+	p.add("state_flags_crossfade_look", &state_flags_crossfade, " " ICON_CROSSFADE, IntoWString);
+	p.add("state_flags_db_update_look", &state_flags_db_update, " " ICON_UPDATE, IntoWString);
+	p.add("state_flags_random_look", &state_flags_random, " " ICON_RANDOM, IntoWString);
+	p.add("state_flags_repeat_look", &state_flags_repeat, " " ICON_REPEAT, IntoWString);
+	p.add("state_flags_repeat_single_look", &state_flags_repeat_single, " " ICON_REPEAT_SINGLE, IntoWString);
+	p.add("state_flags_single_look", &state_flags_single, " " ICON_SINGLE, IntoWString);
 	p.add("statusbar_color", &statusbar_color, "default");
 	p.add("statusbar_time_color", &statusbar_time_color, "default:b");
 	p.add("player_state_color", &player_state_color, "default:b");

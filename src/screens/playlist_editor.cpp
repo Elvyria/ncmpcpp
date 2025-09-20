@@ -40,6 +40,7 @@
 #include "utility/comparators.h"
 #include "title.h"
 #include "screens/screen_switcher.h"
+#include "lang.h"
 
 using Global::MainHeight;
 using Global::MainStartY;
@@ -74,7 +75,7 @@ PlaylistEditor::PlaylistEditor()
 	RightColumnWidth = COLS-LeftColumnWidth-1;
 
 
-	Playlists = NC::Menu<MPD::Playlist>(0, MainStartY, LeftColumnWidth, MainHeight, Config.titles_visibility ? "󰲹   Playlists" : "", Config.main_color, NC::Border());
+	Playlists = NC::Menu<MPD::Playlist>(0, MainStartY, LeftColumnWidth, MainHeight, Config.titles_visibility ? lang::TITLE_PLAYLISTS : "", Config.main_color, NC::Border());
 	setHighlightFixes(Playlists);
 	Playlists.cyclicScrolling(Config.use_cyclic_scrolling);
 	Playlists.centeredCursor(Config.centered_cursor);
@@ -84,7 +85,7 @@ PlaylistEditor::PlaylistEditor()
 		menu << Charset::utf8ToLocale(menu.drawn()->value().path());
 	});
 	
-	Content = NC::Menu<MPD::Song>(RightColumnStartX, MainStartY, RightColumnWidth, MainHeight, Config.titles_visibility ? "    Tracks" : "", Config.main_color, NC::Border());
+	Content = NC::Menu<MPD::Song>(RightColumnStartX, MainStartY, RightColumnWidth, MainHeight, Config.titles_visibility ? " " + lang::TITLE_TRACKS : "", Config.main_color, NC::Border());
 	setHighlightInactiveColumnFixes(Content);
 	Content.cyclicScrolling(Config.use_cyclic_scrolling);
 	Content.centeredCursor(Config.centered_cursor);
@@ -200,7 +201,7 @@ void PlaylistEditor::update()
 			std::string wtitle;
 			if (Config.titles_visibility)
 			{
-				wtitle = (boost::format("    Tracks (%1%)")
+				wtitle = (boost::format(" " + lang::TITLE_TRACKS + "  (%1%)")
 				          % boost::lexical_cast<std::string>(Content.size())).str();
 				wtitle.resize(Content.getWidth());
 			}

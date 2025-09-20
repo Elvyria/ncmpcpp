@@ -109,8 +109,10 @@ noinst_HEADERS = \
 	global.h \
 	helpers.h \
 	helpers/song_iterator_maker.h \
+	icons.h \
 	interfaces.h \
 	lastfm_service.h \
+	lang.h \
 	lyrics_fetcher.h \
 	macro_utilities.h \
 	mpdpp.h \

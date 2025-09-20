@@ -22,6 +22,7 @@
 #define NCMPCPP_SEARCH_ENGINE_H
 
 #include <cassert>
+#include <string_view>
 
 #include "interfaces.h"
 #include "mpdpp.h"
@@ -146,7 +147,7 @@ private:
 	static const char *SearchModes[];
 	
 	static const size_t ConstraintsNumber = 11;
-	static const char *ConstraintsNames[];
+	static const std::string ConstraintsNames[];
 	std::string itsConstraints[ConstraintsNumber];
 	
 	static bool MatchToPattern;

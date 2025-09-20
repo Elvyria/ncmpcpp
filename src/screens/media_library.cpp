@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <string_view>
 
 #include "charset.h"
 #include "display.h"
@@ -41,15 +42,13 @@
 #include "utility/type_conversions.h"
 #include "title.h"
 #include "screens/screen_switcher.h"
+#include "lang.h"
 
 using Global::MainHeight;
 using Global::MainStartY;
 using Global::myScreen;
 
 namespace ph = std::placeholders;
-
-const std::string ALBUMS_TITLE = "󰀥   Albums";
-const std::string SONGS_TITLE = "    Songs";
 
 MediaLibrary *myLibrary;
 
@@ -195,7 +194,7 @@ MediaLibrary::MediaLibrary()
 	itsRightColStartX = itsMiddleColStartX+itsMiddleColWidth+1;
 	itsRightColWidth = COLS-itsLeftColWidth-itsMiddleColWidth-2;
 	
-	Tags = NC::Menu<PrimaryTag>(0, MainStartY, itsLeftColWidth, MainHeight, Config.titles_visibility ? "󰽭   " + tagTypeToString(Config.media_lib_primary_tag) + "s" : "", Config.main_color, NC::Border());
+	Tags = NC::Menu<PrimaryTag>(0, MainStartY, itsLeftColWidth, MainHeight, Config.titles_visibility ? ICON_TAG "   " + tagTypeToString(Config.media_lib_primary_tag) + "s" : "", Config.main_color, NC::Border());
 	setHighlightFixes(Tags);
 	Tags.cyclicScrolling(Config.use_cyclic_scrolling);
 	Tags.centeredCursor(Config.centered_cursor);
@@ -209,7 +208,7 @@ MediaLibrary::MediaLibrary()
 			menu << Charset::utf8ToLocale(tag);
 	});
 	
-	Albums = NC::Menu<AlbumEntry>(itsMiddleColStartX, MainStartY, itsMiddleColWidth, MainHeight, Config.titles_visibility ? ALBUMS_TITLE : "", Config.main_color, NC::Border());
+	Albums = NC::Menu<AlbumEntry>(itsMiddleColStartX, MainStartY, itsMiddleColWidth, MainHeight, Config.titles_visibility ? lang::TITLE_ALBUMS : "", Config.main_color, NC::Border());
 	setHighlightInactiveColumnFixes(Albums);
 	Albums.cyclicScrolling(Config.use_cyclic_scrolling);
 	Albums.centeredCursor(Config.centered_cursor);
@@ -219,7 +218,7 @@ MediaLibrary::MediaLibrary()
 		menu << Charset::utf8ToLocale(AlbumToString(menu.drawn()->value()));
 	});
 	
-	Songs = NC::Menu<MPD::Song>(itsRightColStartX, MainStartY, itsRightColWidth, MainHeight, Config.titles_visibility ? SONGS_TITLE : "", Config.main_color, NC::Border());
+	Songs = NC::Menu<MPD::Song>(itsRightColStartX, MainStartY, itsRightColWidth, MainHeight, Config.titles_visibility ? lang::TITLE_SONGS : "", Config.main_color, NC::Border());
 	setHighlightInactiveColumnFixes(Songs);
 	Songs.cyclicScrolling(Config.use_cyclic_scrolling);
 	Songs.centeredCursor(Config.centered_cursor);
@@ -934,17 +933,17 @@ void MediaLibrary::toggleColumnsMode()
 			if (isAlbumOnly)
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " (sorted by mtime)" : "";
-				Albums.setTitle(ALBUMS_TITLE + and_mtime);
+				Albums.setTitle(lang::TITLE_ALBUMS + and_mtime);
 			}
 			else
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " and mtime" : "";
-				Albums.setTitle(ALBUMS_TITLE + " (sorted by " + item_type + and_mtime + ")");
+				Albums.setTitle(lang::TITLE_ALBUMS + " (sorted by " + item_type + and_mtime + ")");
 			}
 		}
 	}
 	else
-		Albums.setTitle(Config.titles_visibility ? " " + ALBUMS_TITLE  : "");
+		Albums.setTitle(Config.titles_visibility ? " " + lang::TITLE_ALBUMS  : "");
 	resize();
 }
 
@@ -974,12 +973,12 @@ void MediaLibrary::toggleSortMode()
 			if (isAlbumOnly)
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? " (sorted by mtime)" : "";
-				Albums.setTitle(ALBUMS_TITLE + and_mtime);
+				Albums.setTitle(lang::TITLE_ALBUMS + and_mtime);
 			}
 			else
 			{
 				std::string and_mtime = Config.media_library_sort_by_mtime ? (" " "and mtime") : "";
-				Albums.setTitle(ALBUMS_TITLE + " (sorted by " + item_type + and_mtime + ")");
+				Albums.setTitle(lang::TITLE_ALBUMS + " (sorted by " + item_type + and_mtime + ")");
 			}
 		}
 	}
