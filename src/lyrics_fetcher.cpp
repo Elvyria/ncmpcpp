@@ -130,7 +130,8 @@ std::vector<std::string> LyricsFetcher::getContent(const char *regex_,
 	{
 		std::string content;
 		for (size_t i = 1; i < first->size(); ++i)
-			content += first->str(i);
+			content += first->str(i) + "<br/><br/>";
+		content.resize(content.length() - 10);
 		result.push_back(std::move(content));
 	}
 	return result;
